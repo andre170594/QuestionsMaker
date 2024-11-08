@@ -1,5 +1,5 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "https://certificationproject-3dbf5-default-rtdb.firebaseio.com";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -16,7 +16,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 import {getDatabase, ref, get, set, child, update, remove, push}
-    from "https://certificationproject-3dbf5-default-rtdb.firebaseio.com";
+    from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
 
 const db = getDatabase();
 
