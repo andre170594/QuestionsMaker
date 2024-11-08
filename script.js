@@ -3,13 +3,13 @@ import { initializeApp } from "XXXXXXXXXXXXXXXXXXXXXX";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "XXXXXXXXXXXXXXXXXXXXXX",
-    authDomain: "XXXXXXXXXXXXXXXXXXXXXX",
-    databaseURL: "XXXXXXXXXXXXXXXXXXXXXX",
-    projectId: "XXXXXXXXXXXXXXXXXXXXXX",
-    storageBucket: "XXXXXXXXXXXXXXXXXXXXXX",
-    messagingSenderId: "XXXXXXXXXXXXXXXXXXXXXX",
-    appId: "XXXXXXXXXXXXXXXXXXXXXX"
+  apiKey: "AIzaSyBm_jbKnyNiXewzaHwp8wXYc-MuqKxKFVw",
+  authDomain: "certificationproject-3dbf5.firebaseapp.com",
+  databaseURL: "https://certificationproject-3dbf5-default-rtdb.firebaseio.com",
+  projectId: "certificationproject-3dbf5",
+  storageBucket: "certificationproject-3dbf5.firebasestorage.app",
+  messagingSenderId: "126368435801",
+  appId: "1:126368435801:web:33845b9d0b33b89baaab48"
 };
 
 // Initialize Firebase
