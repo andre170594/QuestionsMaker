@@ -78,7 +78,6 @@ function RemoveOption() {
 
 
 function InsertData() {
-
     const category = document.getElementById("categoryChooser").value;
     if (category==="NONE") {
         alert("Please select a category.");
