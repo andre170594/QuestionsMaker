@@ -13,7 +13,7 @@ const firebaseConfig = {
   appId: "1:126368435801:web:33845b9d0b33b89baaab48"
 };
 
-// Initialize Firebase
+
 const app = initializeApp(firebaseConfig);
 
 import {getDatabase, ref, get, set, child, update, remove, push}
@@ -37,13 +37,12 @@ var viewQuestionButton = document.getElementById("viewQuestion");
 
 
 function AddOption() {
-    // Get the options container and count current options
+
     const optionsContainer = document.querySelector("#options");
     const currentOptions = optionsContainer.querySelectorAll("input[type='text']");
 
-    // Check if there are fewer than 6 options
+
     if (currentOptions.length < 6) {
-        // Create a new option with checkbox
         const newOptionNumber = currentOptions.length + 1;
         const newOptionHTML = `
             <div class="option-container">
@@ -53,7 +52,6 @@ function AddOption() {
             </div>
         `;
 
-        // Insert the new option HTML before the "Add Option" button
         const addButton = document.querySelector("#AddOpts");
         addButton.insertAdjacentHTML("beforebegin", newOptionHTML);
     } else {
@@ -64,7 +62,6 @@ function RemoveOption() {
     const optionsContainer = document.querySelector("#options");
     const currentOptions = optionsContainer.querySelectorAll(".option-container");
 
-    // Check if there are more than 2 options
     if (currentOptions.length > 2) {
         const lastOption = currentOptions[currentOptions.length - 1];
 
@@ -72,7 +69,7 @@ function RemoveOption() {
         console.log("Is lastOption a child of optionsContainer?", optionsContainer.contains(lastOption));
 
         if (optionsContainer.contains(lastOption)) {
-            lastOption.remove(); // Use .remove() method to avoid parent-child mismatch
+            lastOption.remove();
             console.log("Successfully removed:", lastOption);
         }
     } else {
@@ -93,7 +90,6 @@ function InsertData() {
         alert("Please enter a question before inserting.");
         return;
     }
-
 
   const optionsList = [];
   let numCorrect = 0;
@@ -116,13 +112,12 @@ function InsertData() {
     const questionText = questionInput.value;
     const explanationText = explanationInput.value;
     const questionData = {
-        pergunta: questionText, // Question prompt
-        listOpt: optionsList, // List of options
-        explanation: explanationText, // Explanation for the question
-        numCorrect: numCorrect // Number of correct options
+        pergunta: questionText,
+        listOpt: optionsList,
+        explanation: explanationText,
+        numCorrect: numCorrect
     };
 
-    // Define the path based on the selected category
     const pathQuestions = `/questions/${category}/`;
     const questionsRef = ref(db, pathQuestions);
 
@@ -134,13 +129,11 @@ function InsertData() {
             const counterPath = `/examNumQ/${category}`;
             const counterRef = ref(db, counterPath);
 
-
             get(counterRef)
                 .then((snapshot) => {
                     let currentCount = snapshot.val() || 0;
                     currentCount += 1; // Increment the counter
 
-                    // Set the new counter value
                     return set(counterRef, currentCount);
                 })
                 .then(() => {
@@ -152,7 +145,6 @@ function InsertData() {
                 });
 
 
-            // limpar todos os campos
             questionInput.value = "";
             explanationInput.value = "";
             optionsList.forEach((_, index) => {
@@ -254,55 +246,42 @@ async function DeleteQuestion() {
     const selectedCategory = categoryChooser.value;
     const selectedQuestionId = questionsList.value;
 
-    // Check if a question is selected
     if (!selectedQuestionId) {
         alert("Please select a question to delete.");
         return;
     }
 
-    // Define the path to the selected question
     const questionRef = ref(db, `questions/${selectedCategory}/${selectedQuestionId}`);
-
-    // Confirm deletion
     const confirmDelete = confirm("Are you sure you want to delete this question?");
     if (!confirmDelete) {
         return;
     }
 
-    // Delete question from Firebase
     try {
         await remove(questionRef);
         alert("Question deleted successfully.");
 
-
-        // Update counter for the selected category
         const counterPath = `/examNumQ/${selectedCategory}`;
         const counterRef = ref(db, counterPath);
 
-        // Retrieve the current counter value, decrement, and update
         const snapshot = await get(counterRef);
         let currentCount = snapshot.val() || 0;
 
         if (currentCount > 0) {
-            currentCount -= 1; // Decrement the counter
+            currentCount -= 1;
             await set(counterRef, currentCount);
             console.log("Counter updated successfully.");
         } else {
             console.log("Counter is already at zero; no decrement needed.");
         }
 
-
-
         await loadQuestionsForCategory(selectedCategory);
 
-
-        // Clear the input fields
         questionInput.value = "";
         explanationInput.value = "";
         const optionsContainer = document.getElementById("options");
         optionsContainer.innerHTML = ""; // Clear all options
 
-        // Optionally, add default options if needed (e.g., two empty options)
         for (let i = 1; i <= 2; i++) {
             optionsContainer.insertAdjacentHTML("beforeend", `
                 <div class="option-container">
@@ -312,9 +291,6 @@ async function DeleteQuestion() {
                 </div>
             `);
         }
-
-
-
 
     } catch (error) {
         alert("Error deleting question: " + error);
@@ -345,9 +321,8 @@ viewQuestionButton.addEventListener("click", async () => {
             questionInput.value = questionData.pergunta;
             explanationInput.value = questionData.explanation;
 
-            // Populate options
             const optionsContainer = document.getElementById("options");
-            optionsContainer.innerHTML = ""; // Clear existing options
+            optionsContainer.innerHTML = "";
 
             questionData.listOpt.forEach((option, index) => {
                 const optionContainer = document.createElement("div");
@@ -358,7 +333,6 @@ viewQuestionButton.addEventListener("click", async () => {
                     <input id="opt${index + 1}" type="text" class="option-input" value="${option.option}">
                     <input type="checkbox" id="check${index + 1}" ${option.answers ? "checked" : ""}>
                 `;
-
                 optionsContainer.appendChild(optionContainer);
             });
         } else {
