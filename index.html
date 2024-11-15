@@ -1,87 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-      <meta charset="UTF-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Questions Portal</title>
-      <link rel="stylesheet" href="styles.css">
-      <script type="module" src="script.js"></script>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Questions Portal</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body style="display: flex">
+<body>
 
-     <div id="enterDetails">
+<div id="outterDiv">
+ <div id="enterDetails">
 
-         <div id="findDetails" style="padding-bottom: 10px">
-             <h1 style="padding-top: 10px">Find Questions by Certification</h1>
+   <h1>Question Details</h1>
 
-             <!-- Category Selection Dropdown -->
-             <div class="option-chooser">
-                 <label for="categoryChooser" style="font-size: 24px">Choose Certification:</label>
-                 <select id="categoryChooser">
-                     <option value="CAD">NONE</option>
-                     <option value="CAD">CAD</option>
-                     <option value="CSA">CSA</option>
-                     <option value="CIS-HR">CIS-HR</option>
-                     <option value="CIS-PPM">CIS-PPM</option>
-                     <option value="ITSM">ITSM</option>
-                 </select>
-             </div>
-
-             <!-- List of Questions in the Selected Category -->
-             <h4 style="font-size: 24px">Questions List</h4>
-             <label for="questionsList"></label>
-             <select id="questionsList" class="fixed-dropdown" >
-                 <!-- Options will be populated dynamically based on the selected category -->
-             </select>
-
-             <button id="viewQuestion">View Selected Question</button>
-         </div>
+     <div class="option-container" style="width: 100%">
+         <h4 style="margin: 40px">Question</h4>
+         <label for="enterQuestion"></label>
+         <input id="enterQuestion" type="text" style="height: 80px">
+         <h4 style="margin-left: 60px">T/F</h4>
+     </div>
 
 
+   <div id="options">
+      <div class="option-container">
+          <h4>OPT1</h4>
+          <input id="opt1" type="text" class="option-input">
+          <input type="checkbox" id="check1">
+      </div>
 
-       <h1>Question Details</h1>
-         <div class="option-container" style="width: 100%">
-             <h4 style="margin: 40px">Question</h4>
-             <label for="enterQuestion"></label>
-             <input id="enterQuestion" type="text" style="height: 80px">
-             <h4 style="margin-left: 60px">T/F</h4>
-         </div>
+      <div class="option-container">
+          <h4>OPT2</h4>
+          <input id="opt2" type="text" class="option-input">
+          <input type="checkbox" id="check2" >
+      </div>
+
+      <div class="option-container">
+          <h4>OPT3</h4>
+          <input id="opt3" type="text" class="option-input">
+          <input type="checkbox" id="check3">
+      </div>
+
+      <div class="option-container">
+        <h4>OPT4</h4>
+        <input id="opt4" type="text" class="option-input">
+        <input type="checkbox" id="check4">
+      </div>
+
+      <div style="align-content: center; margin-top: 10px;">
+        <button id="AddOpts">Add Option</button>
+      </div>
+
+   </div>
 
 
-       <div id="options">
-          <div class="option-container">
-              <h4>OPT1</h4>
-              <label for="opt1"></label><input id="opt1" type="text" class="option-input">
-              <label for="check1"></label><input type="checkbox" id="check1">
-          </div>
+    <div id="BottomDiv">
+      <h4>Explanation</h4>
+      <label for="enterExplanation"></label>
+      <input id="enterExplanation" type="text">
 
-          <div class="option-container">
-              <h4>OPT2</h4>
-              <label for="opt2"></label><input id="opt2" type="text" class="option-input">
-              <label for="check2"></label><input type="checkbox" id="check2" >
-          </div>
+      <div class="button-container">
+        <button id="insert">INSERT</button>
+        <button id="update">UPDATE</button>
+        <button id="remove">REMOVE</button>
+      </div>
 
-          <div style="align-content: center; margin-top: 10px;">
-            <button id="AddOpts">Add Option</button>
-            <button id="RemoveOpts">Remove Opt</button>
-          </div>
+        <div class="option-chooser">
+            <label for="optionChooser">Choose Certification:</label>
+            <select id="optionChooser">
+                <option value="CAD">CAD</option>
+                <option value="CSA">CSA</option>
+                <option value="CIS-HR">CIS-HR</option>
+            </select>
+        </div>
 
-       </div>
-
-
-          <h4>Explanation</h4>
-          <label for="enterExplanation"></label>
-          <input id="enterExplanation" type="text">
-
-         <div class="eeee" style="padding-bottom: 20px">
-             <button id="insert">INSERT</button>
-             <button id="update">UPDATE</button>
-             <button id="remove">REMOVE</button>
-         </div>
 
     </div>
 
+</div>
 
+<div id="findDetails">
+  <h1>Find by Number</h1>
+  <h4>Number</h4>
+  <label for="findByIndex"></label>
+    <input id="findByIndex" type="text"> <br><br>
+  <button id="find">Find Question</button>
+</div>
+
+    <div class="option-chooser">
+        <label for="optionChooser2">Choose Certification:</label>
+        <select id="optionChooser2">
+            <option value="CAD">CAD</option>
+            <option value="CSA">CSA</option>
+            <option value="CIS-HR">CIS-HR</option>
+        </select>
+    </div>
+
+</div>
+
+<script type="module" src="script.js"></script>
 </body>
 </html>
