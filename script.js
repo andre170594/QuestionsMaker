@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
 
+
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBm_jbKnyNiXewzaHwp8wXYc-MuqKxKFVw",
@@ -83,11 +84,15 @@ function RemoveOption() {
 
 function InsertData() {
 
+    const category = document.getElementById("categoryChooser").value;
+    if (category==="NONE") {
+        alert("Please select a category.");
+        return;
+    }
     if (!questionInput.value) {
         alert("Please enter a question before inserting.");
-        return; // Exit the function if question field is empty
+        return;
     }
-
 
 
   const optionsList = [];
@@ -117,23 +122,35 @@ function InsertData() {
         numCorrect: numCorrect // Number of correct options
     };
 
-    var pathQuestions = "/questions/";
-    if(document.getElementById("categoryChooser").value === "CAD" )
-        pathQuestions+="CAD/";
-    if(document.getElementById("categoryChooser").value === "CSA" )
-        pathQuestions+="CSA/";
-    if(document.getElementById("categoryChooser").value === "CIS-HR" )
-        pathQuestions+="CIS-HR/";
-    if(document.getElementById("categoryChooser").value === "CIS-PPM" )
-        pathQuestions+="CIS-PPM/";
-    if(document.getElementById("categoryChooser").value === "ITSM" )
-        pathQuestions+="ITSM/";
-
+    // Define the path based on the selected category
+    const pathQuestions = `/questions/${category}/`;
     const questionsRef = ref(db, pathQuestions);
 
     push(questionsRef, questionData)
         .then(() => {
             alert("Data added successfully");
+
+            // Update counter for the selected category
+            const counterPath = `/examNumQ/${category}`;
+            const counterRef = ref(db, counterPath);
+
+
+            get(counterRef)
+                .then((snapshot) => {
+                    let currentCount = snapshot.val() || 0;
+                    currentCount += 1; // Increment the counter
+
+                    // Set the new counter value
+                    return set(counterRef, currentCount);
+                })
+                .then(() => {
+                    console.log("Counter updated successfully.");
+                })
+                .catch((error) => {
+                    console.error("Error updating counter:", error);
+                    alert("Failed to update the counter. Please try again.");
+                });
+
 
             // limpar todos os campos
             questionInput.value = "";
@@ -256,9 +273,27 @@ async function DeleteQuestion() {
     try {
         await remove(questionRef);
         alert("Question deleted successfully.");
-        // Optionally, refresh the question list for the selected category
-        await loadQuestionsForCategory(selectedCategory);
 
+
+        // Update counter for the selected category
+        const counterPath = `/examNumQ/${selectedCategory}`;
+        const counterRef = ref(db, counterPath);
+
+        // Retrieve the current counter value, decrement, and update
+        const snapshot = await get(counterRef);
+        let currentCount = snapshot.val() || 0;
+
+        if (currentCount > 0) {
+            currentCount -= 1; // Decrement the counter
+            await set(counterRef, currentCount);
+            console.log("Counter updated successfully.");
+        } else {
+            console.log("Counter is already at zero; no decrement needed.");
+        }
+
+
+
+        await loadQuestionsForCategory(selectedCategory);
 
 
         // Clear the input fields
