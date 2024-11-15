@@ -83,6 +83,13 @@ function RemoveOption() {
 
 function InsertData() {
 
+    if (!questionInput.value) {
+        alert("Please enter a question before inserting.");
+        return; // Exit the function if question field is empty
+    }
+
+
+
   const optionsList = [];
   let numCorrect = 0;
 
