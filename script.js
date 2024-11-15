@@ -1,8 +1,7 @@
-// Import the functions you need from the SDKs you need
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
 
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBm_jbKnyNiXewzaHwp8wXYc-MuqKxKFVw",
   authDomain: "certificationproject-3dbf5.firebaseapp.com",
@@ -12,7 +11,6 @@ const firebaseConfig = {
   messagingSenderId: "126368435801",
   appId: "1:126368435801:web:33845b9d0b33b89baaab48"
 };
-
 
 const app = initializeApp(firebaseConfig);
 
