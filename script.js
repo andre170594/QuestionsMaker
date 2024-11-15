@@ -23,10 +23,15 @@ const db = getDatabase();
 var questionInput = document.querySelector("#enterQuestion");
 var addOpts = document.querySelector("#AddOpts");
 var explanationInput = document.querySelector("#enterExplanation");
-
 var insertBtn = document.querySelector("#insert");
-var findBtn = document.querySelector("#find");
+var removeBtn = document.querySelector("#RemoveOpts");
+var updateBtn = document.querySelector("#update");
+var removeQuestionBtn = document.querySelector("#remove");
 
+
+var categoryChooser = document.getElementById("categoryChooser");
+var questionsList = document.getElementById("questionsList");
+var viewQuestionButton = document.getElementById("viewQuestion");
 
 
 
@@ -54,9 +59,28 @@ function AddOption() {
         alert("Maximum of 6 options reached.");
     }
 }
+function RemoveOption() {
+    const optionsContainer = document.querySelector("#options");
+    const currentOptions = optionsContainer.querySelectorAll(".option-container");
+
+    // Check if there are more than 2 options
+    if (currentOptions.length > 2) {
+        const lastOption = currentOptions[currentOptions.length - 1];
+
+        console.log("Attempting to remove:", lastOption);
+        console.log("Is lastOption a child of optionsContainer?", optionsContainer.contains(lastOption));
+
+        if (optionsContainer.contains(lastOption)) {
+            lastOption.remove(); // Use .remove() method to avoid parent-child mismatch
+            console.log("Successfully removed:", lastOption);
+        }
+    } else {
+        alert("Minimum of 2 options required.");
+    }
+}
 
 
-// Insert data function
+
 function InsertData() {
 
   const optionsList = [];
@@ -87,12 +111,16 @@ function InsertData() {
     };
 
     var pathQuestions = "/questions/";
-    if(document.getElementById("optionChooser").value === "CAD" )
+    if(document.getElementById("categoryChooser").value === "CAD" )
         pathQuestions+="CAD/";
-    if(document.getElementById("optionChooser").value === "CSA" )
+    if(document.getElementById("categoryChooser").value === "CSA" )
         pathQuestions+="CSA/";
-    if(document.getElementById("optionChooser").value === "CIS-HR" )
+    if(document.getElementById("categoryChooser").value === "CIS-HR" )
         pathQuestions+="CIS-HR/";
+    if(document.getElementById("categoryChooser").value === "CIS-PPM" )
+        pathQuestions+="CIS-PPM/";
+    if(document.getElementById("categoryChooser").value === "ITSM" )
+        pathQuestions+="ITSM/";
 
     const questionsRef = ref(db, pathQuestions);
 
@@ -112,78 +140,191 @@ function InsertData() {
             alert(error);
         })
 }
+async function loadQuestionsForCategory(category) {
+    questionsList.innerHTML = ""; // Clear previous options
+    const questionsRef = ref(db, `questions/${category}`);
 
-// Find data function
-function FindDataByIndex() {
+    try {
+        const snapshot = await get(questionsRef);
+        if (snapshot.exists()) {
+            snapshot.forEach((childSnapshot) => {
+                const questionId = childSnapshot.key;
+                const questionData = childSnapshot.val().pergunta; // Assuming 'pergunta' is the question text
 
-    const index = parseInt(document.getElementById("findByIndex").value, 10);
-    // Validate the index input
-    if (isNaN(index) || index < 0) {
-        alert("Please enter a valid index.");
+                // Add each question as an option in the dropdown
+                const option = document.createElement("option");
+                option.value = questionId;
+                option.textContent = questionData;
+                option.className = "fixed-dropdown-option";
+                questionsList.appendChild(option);
+            });
+        } else {
+            alert("No questions found for this category.");
+        }
+    } catch (error) {
+        alert("Error fetching questions: " + error);
+    }
+}
+async function UpdateQuestion() {
+    const selectedCategory = categoryChooser.value;
+    const selectedQuestionId = questionsList.value;
+
+    if (!selectedQuestionId) {
+        alert("Please select a question to update.");
         return;
     }
 
+    // Define the path to the selected question
+    const questionRef = ref(db, `questions/${selectedCategory}/${selectedQuestionId}`);
 
-    var pathQuestions = "/questions/";
-    if(document.getElementById("optionChooser2").value === "CAD" )
-        pathQuestions+="";
-    if(document.getElementById("optionChooser2").value === "CSA" )
-        pathQuestions+="CSA";
-    if(document.getElementById("optionChooser2").value === "CIS-HR" )
-        pathQuestions+="CIS-HR";
+    // Optional: Verify question exists before updating
+    try {
+        const snapshot = await get(questionRef);
+        if (!snapshot.exists()) {
+            alert("Selected question does not exist.");
+            return;
+        }
+    } catch (error) {
+        alert("Error verifying question: " + error);
+        return;
+    }
 
+    // Collect updated question data
+    const optionsList = [];
+    let numCorrect = 0;
 
+    let i = 1;
+    while (document.getElementById(`opt${i}`)) {
+        const optionText = document.getElementById(`opt${i}`).value;
+        const isCorrect = document.getElementById(`check${i}`).checked;
 
-    const dbRef = ref(db, pathQuestions);
-    get(dbRef)
-        .then(async (snapshot) => {
-            if (snapshot.exists()) {
-                const questionsArray = Object.values(snapshot.val()); // Convert snapshot to an array
-                if (index >= 0 && index < questionsArray.length) {
-                    const questionData = questionsArray[index];
-
-                    // Set question input fields with the retrieved data
-                    questionInput.value = questionData.pergunta;
-                    explanationInput.value = questionData.explanation;
-
-
-                    // Check if there are enough options displayed; add more if needed
-                    const requiredOptions = questionData.listOpt.length+1;
-                    const currentOptions = document.querySelectorAll(".option-container").length;
-
-                    // Add options until we have the required number
-                    for (let i = currentOptions; i < requiredOptions; i++) {
-                        AddOption();
-                    }
-
-                    await new Promise(resolve => setTimeout(resolve, 50));
-
-                    questionData.listOpt.forEach((option, i) => {
-                        // Dynamically add options if they don’t already exist
-
-                        document.getElementById(`opt${i + 1}`).value = option.option;
-                        document.getElementById(`check${i + 1}`).checked = option.answers;
-                    });
-                } else {
-                    alert("Index out of range");
-                }
-            } else {
-                alert("No data found");
-            }
-        })
-        .catch((error) => {
-            alert(error);
+        if (isCorrect) {
+            numCorrect++;
+        }
+        optionsList.push({
+            option: optionText,
+            answers: isCorrect,
+            selected: false
         });
+        i++;
+    }
 
+    const questionText = questionInput.value;
+    const explanationText = explanationInput.value;
+    const updatedQuestionData = {
+        pergunta: questionText,
+        listOpt: optionsList,
+        explanation: explanationText,
+        numCorrect: numCorrect
+    };
+
+    // Update data in Firebase
+    try {
+        await update(questionRef, updatedQuestionData);
+        alert("Question updated successfully.");
+    } catch (error) {
+        alert("Error updating question: " + error);
+    }
 }
+async function DeleteQuestion() {
+    const selectedCategory = categoryChooser.value;
+    const selectedQuestionId = questionsList.value;
+
+    // Check if a question is selected
+    if (!selectedQuestionId) {
+        alert("Please select a question to delete.");
+        return;
+    }
+
+    // Define the path to the selected question
+    const questionRef = ref(db, `questions/${selectedCategory}/${selectedQuestionId}`);
+
+    // Confirm deletion
+    const confirmDelete = confirm("Are you sure you want to delete this question?");
+    if (!confirmDelete) {
+        return;
+    }
+
+    // Delete question from Firebase
+    try {
+        await remove(questionRef);
+        alert("Question deleted successfully.");
+        // Optionally, refresh the question list for the selected category
+        await loadQuestionsForCategory(selectedCategory);
 
 
+
+        // Clear the input fields
+        questionInput.value = "";
+        explanationInput.value = "";
+        const optionsContainer = document.getElementById("options");
+        optionsContainer.innerHTML = ""; // Clear all options
+
+        // Optionally, add default options if needed (e.g., two empty options)
+        for (let i = 1; i <= 2; i++) {
+            optionsContainer.insertAdjacentHTML("beforeend", `
+                <div class="option-container">
+                    <h4>OPT${i}</h4>
+                    <input id="opt${i}" type="text" class="option-input" value="">
+                    <input type="checkbox" id="check${i}">
+                </div>
+            `);
+        }
+
+
+
+
+    } catch (error) {
+        alert("Error deleting question: " + error);
+    }
+}
 
 
 // Event listeners for buttons
 addOpts.addEventListener("click", AddOption);
 insertBtn.addEventListener('click', InsertData);
-findBtn.addEventListener('click', FindDataByIndex);
+removeBtn.addEventListener('click', RemoveOption);
+updateBtn.addEventListener('click', UpdateQuestion);
+removeQuestionBtn.addEventListener('click', DeleteQuestion);
+categoryChooser.addEventListener("change", async () => {
+    const selectedCategory = categoryChooser.value;
+    await loadQuestionsForCategory(selectedCategory);
+});
+viewQuestionButton.addEventListener("click", async () => {
+    const selectedCategory = categoryChooser.value;
+    const selectedQuestionId = questionsList.value;
+
+    if (selectedQuestionId) {
+        const questionRef = ref(db, `questions/${selectedCategory}/${selectedQuestionId}`);
+        const snapshot = await get(questionRef);
+
+        if (snapshot.exists()) {
+            const questionData = snapshot.val();
+            questionInput.value = questionData.pergunta;
+            explanationInput.value = questionData.explanation;
+
+            // Populate options
+            const optionsContainer = document.getElementById("options");
+            optionsContainer.innerHTML = ""; // Clear existing options
+
+            questionData.listOpt.forEach((option, index) => {
+                const optionContainer = document.createElement("div");
+                optionContainer.classList.add("option-container");
+
+                optionContainer.innerHTML = `
+                    <h4>OPT${index + 1}</h4>
+                    <input id="opt${index + 1}" type="text" class="option-input" value="${option.option}">
+                    <input type="checkbox" id="check${index + 1}" ${option.answers ? "checked" : ""}>
+                `;
+
+                optionsContainer.appendChild(optionContainer);
+            });
+        } else {
+            alert("Question not found.");
+        }
+    }
+});
+
 
 
 
