@@ -23,6 +23,7 @@ body {
     border-radius: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(10px);
+    display: flow-root;
 }
 input {
     width: 60%;  /* Adjust to desired width */
