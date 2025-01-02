@@ -16,7 +16,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-import {getDatabase, ref, get, set, child, update, remove, push}
+import {getDatabase, ref, get}
     from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
 const db = getDatabase();
@@ -36,9 +36,17 @@ async function fetchUsers() {
                 const user = childSnapshot.val();
                 const listItem = document.createElement('li');
                 listItem.textContent = user.username;  // Assuming 'username' is a field in your user data
-                listItem.onclick = function() {
-                    displayUserFeeds(user.username); // Pass userId (key) when clicked
-                };
+                listItem.addEventListener('click', function () {
+                    // Remove 'selected-user' class from all list items
+                    const allListItems = userListElement.querySelectorAll('li');
+                    allListItems.forEach(item => item.classList.remove('selected-user'));
+
+                    // Add the 'selected-user' class to the clicked list item
+                    listItem.classList.add('selected-user');
+
+                    // Display feeds for the selected user
+                    displayUserFeeds(user.username); // Pass the username to display feeds
+                });
                 userListElement.appendChild(listItem);
             });
         } else {
@@ -70,9 +78,9 @@ async function displayUserFeeds(userName) {
                     const feedElement = document.createElement('div');
                     feedElement.classList.add('feed-item');
                     feedElement.innerHTML = `
-                        <h3>${feed.title}</h3>
-                        <p>${feed.content}</p>
-                        <p><strong>Date:</strong> ${feed.formatedDate}</p>
+                        <p><strong>Test: </strong> ${feed.title}</p>
+                        <p><strong>Score:</strong> ${feed.content}</p>
+                        <p><strong>Date: </strong> ${feed.formatedDate}</p>
                     `;
                     feedsContent.appendChild(feedElement);
                 }

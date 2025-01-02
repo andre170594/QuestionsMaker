@@ -11,7 +11,7 @@ body {
 /* Navbar styles */
 .navbar {
     background-color: rgba(85, 255, 0, 0.15);
-    padding: 10px 20px;
+    padding: 20px 20px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,6 +19,7 @@ body {
     top: 0;
     width: 100%;
     z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .navbar ul {
@@ -66,7 +67,7 @@ section {
     border-radius: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(10px);
-    margin-top: 60px; /* Ensures content is below navbar */
+    margin-top: 80px; /* Ensures content is below navbar */
 }
 
 #findDetails {
@@ -98,9 +99,7 @@ input {
 #options {
     margin: 20px 0;
     padding: 15px;
-    background: rgba(255, 255, 255, 0.15);
     border-radius: 10px;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
 /* Flex container for each option with label, input, and checkbox */

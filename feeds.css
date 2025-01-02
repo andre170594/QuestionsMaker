@@ -1,14 +1,18 @@
 body {
     font-family: Arial, sans-serif;
-    margin: 0;
+    margin-bottom: 50px;
     padding: 0;
     background: linear-gradient(to right, rgba(0, 150, 136, 0.34), #144e06);
 }
 
 /* Navbar styles */
+
+#h1,h2,h3,h4,h5,h6,p {
+    color: #076045;
+}
 .navbar {
-    background-color: rgba(85, 255, 0, 0.15);
-    padding: 10px 20px;
+    background-color: rgba(85, 255, 0, 0.20);
+    padding: 20px 20px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,6 +20,7 @@ body {
     top: 0;
     width: 100%;
     z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .navbar ul {
@@ -49,6 +54,7 @@ body {
 /* Main content layout */
 #main-content {
     padding: 80px 20px 20px; /* Adding top padding to avoid overlap with the navbar */
+    margin-top: 20px;
 }
 
 /* Section styling */
@@ -58,6 +64,7 @@ section {
 
 
 .feeds-container {
+    margin-top: 20px;
     display: flex;
     padding: 20px;
 }
@@ -88,13 +95,15 @@ section {
     cursor: pointer;
     margin-bottom: 10px;
     padding: 10px;
-    background-color: rgba(232, 225, 225, 0.49);
+    background-color: rgba(85, 255, 0, 0.28);
     border-radius: 10px;
-    transition: background-color 0.3s ease;
+    transition: background 0.3s ease, transform 0.3s ease;
+    text-align: center;
 }
 
 #userList li:hover {
     background-color: rgba(85, 255, 0, 0.15);
+    transform: translateY(-2px);
 }
 
 .feed-item {
@@ -106,4 +115,11 @@ section {
 
 .feed-item p {
     margin: 5px 0;
+    color: white;
+}
+
+.selected-user {
+    border: 4px solid #076045; /* Add a visual indicator on the left */
+    color: #076045;
+    font-weight: bold;
 }
