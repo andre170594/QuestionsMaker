@@ -1,6 +1,5 @@
-
+// DB CONFIGS
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-
 
 const firebaseConfig = {
   apiKey: "AIzaSyBm_jbKnyNiXewzaHwp8wXYc-MuqKxKFVw",
@@ -18,6 +17,7 @@ import {getDatabase, ref, get, set, child, update, remove, push}
     from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
 const db = getDatabase();
+// END DB CONFIGS
 
 var questionInput = document.querySelector("#enterQuestion");
 var addOpts = document.querySelector("#AddOpts");
@@ -27,13 +27,12 @@ var removeBtn = document.querySelector("#RemoveOpts");
 var updateBtn = document.querySelector("#update");
 var removeQuestionBtn = document.querySelector("#remove");
 
-
 var categoryChooser = document.getElementById("categoryChooser");
 var questionsList = document.getElementById("questionsList");
 var viewQuestionButton = document.getElementById("viewQuestion");
 
 
-
+// OPTIONS RELATED FUNCTIONS
 function AddOption() {
 
     const optionsContainer = document.querySelector("#options");
@@ -75,8 +74,7 @@ function RemoveOption() {
     }
 }
 
-
-
+// QUESTIONS RELATED FUNCTIONS
 function InsertData() {
     const category = document.getElementById("categoryChooser").value;
     if (category==="NONE") {
@@ -294,6 +292,11 @@ async function DeleteQuestion() {
     }
 }
 
+// NAVBAR FUNCTIONS
+function logout() {
+    localStorage.setItem("isLoggedIn", "false");
+    window.location.href = "login.html";
+}
 
 // Event listeners for buttons
 addOpts.addEventListener("click", AddOption);

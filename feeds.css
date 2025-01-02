@@ -1,0 +1,109 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to right, rgba(0, 150, 136, 0.34), #144e06);
+}
+
+/* Navbar styles */
+.navbar {
+    background-color: rgba(85, 255, 0, 0.15);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar li {
+    margin: 0 20px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+}
+
+.navbar a:hover {
+    text-decoration: underline;
+}
+
+
+
+.navbar .dropdown {
+    position: relative;
+}
+
+
+/* Main content layout */
+#main-content {
+    padding: 80px 20px 20px; /* Adding top padding to avoid overlap with the navbar */
+}
+
+/* Section styling */
+section {
+    margin-bottom: 40px;
+}
+
+
+.feeds-container {
+    display: flex;
+    padding: 20px;
+}
+
+.users-pane {
+    margin-top: 40px;
+    width: 20%;
+    padding: 20px;
+    background: rgba(129, 129, 129, 0.3);
+    border-radius: 8px;
+    margin-right: 20px;
+}
+
+.feeds-pane {
+    margin-top: 40px;
+    width: 75%;
+    padding: 20px;
+    background: rgba(129, 129, 129, 0.3);
+    border-radius: 10px;
+}
+
+#userList {
+    list-style-type: none;
+    padding: 0;
+}
+
+#userList li {
+    cursor: pointer;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: rgba(232, 225, 225, 0.49);
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+}
+
+#userList li:hover {
+    background-color: rgba(85, 255, 0, 0.15);
+}
+
+.feed-item {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: rgba(85, 255, 0, 0.08);
+    border-radius: 5px;
+}
+
+.feed-item p {
+    margin: 5px 0;
+}

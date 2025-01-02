@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feeds</title>
+  <link rel="stylesheet" href="feeds.css">
+</head>
+<body>
+<!-- Navbar -->
+<!-- Navbar -->
+<nav class="navbar">
+  <ul>
+    <li><a href="index.html">Questions Maker</a></li>
+    <li><a href="feeds.html">Feeds</a></li>
+    <li class="dropdown">
+      <a href="login.html" id="logout" onclick="logout()">Logout</a>
+    </li>
+  </ul>
+</nav>
+
+<!-- Feeds Section -->
+<div class="feeds-container">
+  <!-- Left pane for displaying users -->
+  <div class="users-pane">
+    <h2>Users</h2>
+    <ul id="userList"></ul>
+  </div>
+
+  <!-- Right pane for displaying selected user's feeds -->
+  <div class="feeds-pane">
+    <h2>User Feeds</h2>
+    <div id="feedsContent">
+      <p>Select a user to view their feeds.</p>
+    </div>
+  </div>
+</div>
+<script src="feeds.js" type="module"></script>
+</body>
+</html>
