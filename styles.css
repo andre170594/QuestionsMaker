@@ -185,13 +185,13 @@ button:hover {
     color: #144e06;
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
 }
 
 .fixed-dropdown-option {
-    display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 200px;
+    width: 200px; /* Set a fixed width */
+    height: 150px; /* Set a fixed height */
+    overflow-y: auto; /* Make it scrollable */
 }
 
 /* Heading styles */
@@ -200,4 +200,3 @@ h1 {
     color: #ffffff;
     margin-bottom: 20px;
 }
-

@@ -32,47 +32,7 @@ var questionsList = document.getElementById("questionsList");
 var viewQuestionButton = document.getElementById("viewQuestion");
 
 
-// OPTIONS RELATED FUNCTIONS
-function AddOption() {
 
-    const optionsContainer = document.querySelector("#options");
-    const currentOptions = optionsContainer.querySelectorAll("input[type='text']");
-
-
-    if (currentOptions.length < 6) {
-        const newOptionNumber = currentOptions.length + 1;
-        const newOptionHTML = `
-            <div class="option-container">
-            <h4>OPT${newOptionNumber}</h4>
-            <input id="opt${newOptionNumber}" type="text" class="option-input">
-            <input type="checkbox" id="check${newOptionNumber}">
-            </div>
-        `;
-
-        const addButton = document.querySelector("#AddOpts");
-        addButton.insertAdjacentHTML("beforebegin", newOptionHTML);
-    } else {
-        alert("Maximum of 6 options reached.");
-    }
-}
-function RemoveOption() {
-    const optionsContainer = document.querySelector("#options");
-    const currentOptions = optionsContainer.querySelectorAll(".option-container");
-
-    if (currentOptions.length > 2) {
-        const lastOption = currentOptions[currentOptions.length - 1];
-
-        console.log("Attempting to remove:", lastOption);
-        console.log("Is lastOption a child of optionsContainer?", optionsContainer.contains(lastOption));
-
-        if (optionsContainer.contains(lastOption)) {
-            lastOption.remove();
-            console.log("Successfully removed:", lastOption);
-        }
-    } else {
-        alert("Minimum of 2 options required.");
-    }
-}
 
 // QUESTIONS RELATED FUNCTIONS
 function InsertData() {
@@ -292,6 +252,51 @@ async function DeleteQuestion() {
     }
 }
 
+// OPTIONS RELATED FUNCTIONS
+function AddOption() {
+    const optionsContainer = document.querySelector("#options");
+    const currentOptions = optionsContainer.querySelectorAll("input[type='text']");
+
+    if (currentOptions.length < 6) {
+        const newOptionNumber = currentOptions.length + 1;
+
+        // Create a new div element for the option
+        const optionContainer = document.createElement('div');
+        optionContainer.classList.add('option-container');
+
+        // Set the inner HTML for the option
+        optionContainer.innerHTML = `
+            <h4>OPT${newOptionNumber}</h4>
+            <input id="opt${newOptionNumber}" type="text" class="option-input">
+            <input type="checkbox" id="check${newOptionNumber}">
+        `;
+
+        // Select the button container
+        const buttonContainer = document.querySelector('#options').querySelector('div[style]');
+
+        // Insert the new option above the button container
+        optionsContainer.insertBefore(optionContainer, buttonContainer);
+    } else {
+        alert("Maximum of 6 options reached.");
+    }
+}
+function RemoveOption() {
+    const optionsContainer = document.querySelector("#options");
+    const currentOptions = optionsContainer.querySelectorAll(".option-container");
+
+    if (currentOptions.length > 2) {
+        const lastOption = currentOptions[currentOptions.length - 1];
+
+        if (optionsContainer.contains(lastOption)) {
+            lastOption.remove();
+        }
+    } else {
+        alert("Minimum of 2 options required.");
+    }
+}
+
+
+
 // NAVBAR FUNCTIONS
 function logout() {
     localStorage.setItem("isLoggedIn", "false");
@@ -299,9 +304,7 @@ function logout() {
 }
 
 // Event listeners for buttons
-addOpts.addEventListener("click", AddOption);
 insertBtn.addEventListener('click', InsertData);
-removeBtn.addEventListener('click', RemoveOption);
 updateBtn.addEventListener('click', UpdateQuestion);
 removeQuestionBtn.addEventListener('click', DeleteQuestion);
 categoryChooser.addEventListener("change", async () => {
@@ -322,8 +325,9 @@ viewQuestionButton.addEventListener("click", async () => {
             explanationInput.value = questionData.explanation;
 
             const optionsContainer = document.getElementById("options");
-            optionsContainer.innerHTML = "";
+            optionsContainer.innerHTML = "";  // Clear existing options
 
+            // Add options dynamically
             questionData.listOpt.forEach((option, index) => {
                 const optionContainer = document.createElement("div");
                 optionContainer.classList.add("option-container");
@@ -335,11 +339,33 @@ viewQuestionButton.addEventListener("click", async () => {
                 `;
                 optionsContainer.appendChild(optionContainer);
             });
+
+            // Add the buttons (Ensure they're not removed)
+            const buttonContainer = document.createElement('div');
+            buttonContainer.style.cssText = 'align-content: center; margin-top: 10px;';
+
+            const addButton = document.createElement('button');
+            addButton.textContent = 'Add Option';
+            addButton.id = 'AddOpts';
+            buttonContainer.appendChild(addButton);
+
+            const removeButton = document.createElement('button');
+            removeButton.textContent = 'Remove Option';
+            removeButton.id = 'RemoveOpts';
+            buttonContainer.appendChild(removeButton);
+
+            optionsContainer.appendChild(buttonContainer);
+
+            // Attach event listeners for Add and Remove buttons
+            addButton.addEventListener("click", AddOption);
+            removeButton.addEventListener("click", RemoveOption);
         } else {
             alert("Question not found.");
         }
     }
 });
+addOpts.addEventListener("click", AddOption);
+removeBtn.addEventListener('click', RemoveOption);
 
 
 
