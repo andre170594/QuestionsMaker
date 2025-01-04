@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Questions Pool</title>
+  <link rel="stylesheet" href="poolquestions.css">
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar">
+  <ul>
+    <li><a href="index.html">Questions Maker</a></li>
+    <li><a href="feeds.html">Feeds</a></li>
+    <li><a href="poolquestions.html">Pool of Questions</a></li>
+    <li class="dropdown">
+      <a href="login.html" id="logout" onclick="logout()">Logout</a>
+    </li>
+  </ul>
+</nav>
+
+<!-- Table to display exams and number of questions -->
+<div class="pool-container">
+  <table id="examTable">
+    <thead>
+    <tr>
+      <th>Exam Name</th>
+      <th>Number of Questions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Rows will be populated dynamically -->
+    </tbody>
+  </table>
+</div>
+
+<!-- Link to the external JavaScript file -->
+<script src="poolquestions.js" type="module"></script>
+</body>
+</html>
