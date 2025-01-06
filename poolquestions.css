@@ -63,6 +63,8 @@ section {
     border: 1px solid #ccc;
     border-radius: 8px;
     max-width: 800px; /* Set a max-width for the container */
+
+
 }
 
 /* Table styling */
@@ -70,6 +72,7 @@ table {
     width: 100%; /* Make the table take the full width of its container */
     border-collapse: collapse; /* Combine table borders */
     table-layout: auto; /* Automatically adjust column widths */
+
 }
 
 th, td {
@@ -85,10 +88,13 @@ th {
 table tbody {
     max-height: 300px; /* Set a maximum height for the table body */
     overflow-y: auto; /* Allow scrolling if the rows exceed the height */
+    background: rgba(129, 129, 129, 0.3);
 }
 
 table tbody tr {
+
     display: table-row; /* Ensure rows display correctly */
     width: 100%;
+    color: #ffffff;
 }
 

@@ -46,6 +46,7 @@ async function fetchUsers() {
 
                     // Display feeds for the selected user
                     displayUserFeeds(user.username); // Pass the username to display feeds
+                    displayUserDetails(user);
                 });
                 userListElement.appendChild(listItem);
             });
@@ -94,9 +95,17 @@ async function displayUserFeeds(userName) {
     }
 }
 
+// Function to display user details
+function displayUserDetails(user)
+{ const userDetails = document.getElementById('userDetails');
+    const averageScore = (user.avgScores.reduce((a, b) => a + b, 0) / user.avgScores.length).toFixed(2);
+    document.getElementById('userName').textContent = user.username;
+    document.getElementById('averageScore').textContent = averageScore;
+    document.getElementById('lastScore').textContent = user.lastScore;
+    userDetails.style.display = 'flex';
+}
 
 // Initialize and fetch users on page load
-
 document.addEventListener('DOMContentLoaded', () => {
     fetchUsers();
 });
