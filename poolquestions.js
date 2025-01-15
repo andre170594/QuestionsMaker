@@ -15,7 +15,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-import {getDatabase, ref, get}
+import {getDatabase, ref, get, set}
     from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
 const db = getDatabase();
@@ -66,6 +66,45 @@ async function fetchExamData() {
         alert("Failed to fetch exam data.");
     }
 }
+
+
+
+// Handle form submission
+const notificationForm = document.getElementById("notificationForm");
+notificationForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    // Get the notification name from the input
+    const notificationName = document.getElementById("notificationName").value.trim().toUpperCase();
+
+    if (notificationName === "") {
+        alert("Notification name cannot be empty!");
+        return;
+    }
+
+    // Reference to the notification in the database
+    const notificationsRef = ref(db, `examNumQ/${notificationName}`);
+    try {
+        // Check if the notification already exists
+        const snapshot = await get(notificationsRef);
+        if (snapshot.exists()) {
+            alert(`Notification "${notificationName}" already exists!`);
+        } else {
+            // Create a new notification entry in the database
+            await set(notificationsRef, 0); // Assign 0 questions to the new notification
+            alert(`Notification "${notificationName}" created with 0 questions.`);
+            document.getElementById("notificationName").value = ""; // Clear the input field
+        }
+    } catch (error) {
+        alert("Error checking/creating notification: " + error);
+    }
+});
+
+
+
+
+
+
 
 // Call the function to fetch and display exam data when the page loads
 window.onload = fetchExamData;

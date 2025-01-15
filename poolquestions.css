@@ -1,8 +1,8 @@
 body {
     font-family: Arial, sans-serif;
-    padding: 0;
     background: linear-gradient(to right, rgba(0, 150, 136, 0.34), #144e06);
     margin: 0;
+    padding-top: 100px; /* Add extra padding at the top to prevent overlap */
 }
 
 /* Navbar styles */
@@ -66,6 +66,16 @@ section {
 
 
 }
+.notification-creator {
+    margin-top: 120px; /* Ensure it has enough space from the fixed navbar */
+    margin-bottom: 40px; /* Optional: Space from the bottom */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: rgba(0, 150, 136, 0.1); /* Subtle background to match the theme */
+    max-width: 800px; /* Match the max-width of the table */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
 
 /* Table styling */
 table {
@@ -97,4 +107,114 @@ table tbody tr {
     width: 100%;
     color: #ffffff;
 }
+/* Notification creator section styling */
+.notification-creator {
+    margin: 40px auto; /* Center the section and add space from other elements */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: rgba(0, 150, 136, 0.1); /* Subtle background to match the theme */
+    max-width: 800px; /* Match the max-width of the table */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
 
+.notification-creator h2 {
+    margin-bottom: 20px;
+    color: #076045; /* Match the heading color theme */
+    text-align: center; /* Center the title */
+    font-size: 24px;
+}
+
+.notification-creator form {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the form elements */
+}
+
+.notification-creator label {
+    font-size: 18px;
+    color: #076045;
+    margin-bottom: 10px;
+}
+
+.notification-creator input {
+    width: 80%; /* Adjust the width of the input */
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.notification-creator button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #076045; /* Match the primary theme color */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.notification-creator button:hover {
+    background-color: #044d32; /* Darker green on hover */
+}
+
+/* Ensure responsiveness */
+@media screen and (max-width: 600px) {
+    .notification-creator input {
+        width: 100%; /* Full width for smaller screens */
+    }
+
+    .notification-creator button {
+        width: 100%; /* Make the button span the full width */
+    }
+}
+
+.notification-creator form {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the form elements */
+}
+
+.notification-creator button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #076045; /* Match the primary theme color */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 5px; /* Adds space between the buttons */
+}
+
+.notification-creator form {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the form elements */
+}
+
+.notification-creator .button-container {
+    display: flex;
+    justify-content: center; /* Center the buttons horizontally */
+    gap: 10px; /* Adds space between the buttons */
+    width: 100%; /* Ensure the container spans the full width of the form */
+}
+
+.notification-creator button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #076045; /* Match the primary theme color */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.notification-creator button:hover {
+    background-color: #044d32; /* Darker green on hover */
+}

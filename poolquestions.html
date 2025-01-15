@@ -12,12 +12,32 @@
   <ul>
     <li><a href="index.html">Questions Maker</a></li>
     <li><a href="feeds.html">Feeds</a></li>
-    <li><a href="poolquestions.html">Pool of Questions</a></li>
+    <li><a href="poolquestions.html">Certifications</a></li>
     <li class="dropdown">
       <a href="login.html" id="logout" onclick="logout()">Logout</a>
     </li>
   </ul>
 </nav>
+
+
+
+<div class="notification-creator">
+  <h2>Create New Certification</h2>
+  <form id="notificationForm">
+    <label for="notificationName">Certification Name:</label>
+    <input type="text" id="notificationName" placeholder="Enter Certification name" required>
+
+    <!-- Button container for side-by-side buttons -->
+    <div class="button-container">
+      <button type="submit">Create Certification</button>
+      <button type="submit">Delete Certification</button>
+    </div>
+  </form>
+</div>
+
+
+
+
 
 <!-- Table to display exams and number of questions -->
 <div class="pool-container">
@@ -33,6 +53,9 @@
     </tbody>
   </table>
 </div>
+
+
+
 
 <!-- Link to the external JavaScript file -->
 <script src="poolquestions.js" type="module"></script>

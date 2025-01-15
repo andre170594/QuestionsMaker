@@ -111,6 +111,37 @@ function InsertData() {
             alert(error);
         })
 }
+async function loadCategories() {
+    const categoryChooser = document.getElementById("categoryChooser");
+    const categoriesRef = ref(db, "/examNumQ"); // Replace with your actual Firebase path for categories
+
+    try {
+        const snapshot = await get(categoriesRef);
+        if (snapshot.exists()) {
+            categoryChooser.innerHTML = ""; // Clear existing options
+
+            // Add a default 'Choose Certification' option
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "NONE";
+            defaultOption.textContent = "Choose Certification";
+            categoryChooser.appendChild(defaultOption);
+
+            // Populate the dropdown with categories
+            const categories = snapshot.val();
+            for (const category in categories) {
+                const option = document.createElement("option");
+                option.value = category; // Use the category key as the value
+                option.textContent = category; // Display the category name
+                categoryChooser.appendChild(option);
+            }
+        } else {
+            alert("No certifications found.");
+        }
+    } catch (error) {
+        alert("Error fetching certifications: " + error);
+    }
+}
+
 async function loadQuestionsForCategory(category) {
     questionsList.innerHTML = ""; // Clear previous options
     const questionsRef = ref(db, `questions/${category}`);
@@ -304,6 +335,9 @@ function logout() {
 }
 
 // Event listeners for buttons
+document.addEventListener("DOMContentLoaded", () => {
+    loadCategories();
+});
 insertBtn.addEventListener('click', InsertData);
 updateBtn.addEventListener('click', UpdateQuestion);
 removeQuestionBtn.addEventListener('click', DeleteQuestion);
