@@ -297,9 +297,8 @@ function AddOption() {
 
         // Set the inner HTML for the option
         optionContainer.innerHTML = `
-            <h4>OPT${newOptionNumber}</h4>
-            <input id="opt${newOptionNumber}" type="text" class="option-input">
-            <input type="checkbox" id="check${newOptionNumber}">
+            <input placeholder="OPT${newOptionNumber}" id="opt${newOptionNumber}" type="text" class="option-input">
+            <input  type="checkbox" id="check${newOptionNumber}">
         `;
 
         // Select the button container
@@ -367,7 +366,6 @@ viewQuestionButton.addEventListener("click", async () => {
                 optionContainer.classList.add("option-container");
 
                 optionContainer.innerHTML = `
-                    <h4>OPT${index + 1}</h4>
                     <input id="opt${index + 1}" type="text" class="option-input" value="${option.option}">
                     <input type="checkbox" id="check${index + 1}" ${option.answers ? "checked" : ""}>
                 `;
