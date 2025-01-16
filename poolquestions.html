@@ -20,17 +20,16 @@
 </nav>
 
 
-
 <div class="notification-creator">
-  <h2>Create New Certification</h2>
+  <h2>Create or Delete Certification</h2>
   <form id="notificationForm">
-    <label for="notificationName">Certification Name:</label>
+    <label for="notificationName">Select or Enter Certification Name:</label>
+    <select id="notificationDropdown"></select>
     <input type="text" id="notificationName" placeholder="Enter Certification name" required>
 
-    <!-- Button container for side-by-side buttons -->
     <div class="button-container">
-      <button type="submit">Create Certification</button>
-      <button type="submit">Delete Certification</button>
+      <button type="button" id="createCertification">Create Certification</button>
+      <button type="button" id="deleteCertification">Delete Certification</button>
     </div>
   </form>
 </div>

@@ -1,113 +1,128 @@
-console.log("Feeds script loaded successfully.");
-
-// DB CONFIGS
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
+// Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyBm_jbKnyNiXewzaHwp8wXYc-MuqKxKFVw",
     authDomain: "certificationproject-3dbf5.firebaseapp.com",
     databaseURL: "https://certificationproject-3dbf5-default-rtdb.firebaseio.com",
     projectId: "certificationproject-3dbf5",
-    storageBucket: "certificationproject-3dbf5.firebasestorage.app",
+    storageBucket: "certificationproject-3dbf5.appspot.com",
     messagingSenderId: "126368435801",
     appId: "1:126368435801:web:33845b9d0b33b89baaab48"
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-import {getDatabase, ref, get, set}
-    from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
-
 const db = getDatabase();
 
-
-// Function to fetch and display exam data
+// Function to fetch and display certification data
 async function fetchExamData() {
-    const examRef = ref(db, 'examNumQ');  // Assuming 'examNumQ' node holds exam data
-    const examTableBody = document.querySelector('#examTable tbody'); // The table body for displaying exam data
+    const examRef = ref(db, 'examNumQ');
+    const examTableBody = document.querySelector('#examTable tbody');
+    const notificationDropdown = document.getElementById('notificationDropdown'); // Dropdown element
 
     try {
         const snapshot = await get(examRef);
         if (snapshot.exists()) {
-            examTableBody.innerHTML = ''; // Clear the previous table rows
+            // Clear previous data in the table and dropdown
+            examTableBody.innerHTML = '';
+            notificationDropdown.innerHTML = '<option value="" disabled selected>Select a Certification</option>';
 
             snapshot.forEach(childSnapshot => {
-                const examName = childSnapshot.key; // The key will be the exam name (e.g., "CAD")
-                const numQuestions = childSnapshot.val(); // The value will be the number of questions for the exam
+                const examName = childSnapshot.key;
+                const numQuestions = childSnapshot.val();
 
-                // Log to check the data being fetched
-                console.log('Exam Name:', examName);
-                console.log('Number of Questions:', numQuestions);
-
-                // Create a new row for the exam data
+                // Add row to the table
                 const row = document.createElement('tr');
-
-                // Create the first table cell (td) for the exam name
-                const examNameCell = document.createElement('td');
-                examNameCell.textContent = examName; // Set the text content to the exam name
-                row.appendChild(examNameCell); // Append the exam name cell to the row
-
-                // Create the second table cell (td) for the number of questions
-                const numQuestionsCell = document.createElement('td');
-                numQuestionsCell.textContent = numQuestions; // Set the text content to the number of questions
-                row.appendChild(numQuestionsCell); // Append the number of questions cell to the row
-
-                // Log the row creation to ensure it's correct
-                console.log('Row created:', row);
-
-                // Append the row to the table body
+                row.innerHTML = `
+          <td>${examName}</td>
+          <td>${numQuestions}</td>
+        `;
                 examTableBody.appendChild(row);
+
+                // Add option to the dropdown
+                const option = document.createElement('option');
+                option.value = examName;
+                option.textContent = examName;
+                notificationDropdown.appendChild(option);
             });
         } else {
-            alert("No exam data found.");
+            alert("No certification data found.");
         }
     } catch (error) {
-        console.error("Error fetching exam data: ", error);
-        alert("Failed to fetch exam data.");
+        console.error("Error fetching certification data:", error);
+        alert("Failed to fetch certification data.");
     }
 }
 
-
-
-// Handle form submission
-const notificationForm = document.getElementById("notificationForm");
-notificationForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    // Get the notification name from the input
-    const notificationName = document.getElementById("notificationName").value.trim().toUpperCase();
-
-    if (notificationName === "") {
-        alert("Notification name cannot be empty!");
-        return;
-    }
-
-    // Reference to the notification in the database
+// Function to create a certification
+async function createCertification(notificationName) {
     const notificationsRef = ref(db, `examNumQ/${notificationName}`);
     try {
-        // Check if the notification already exists
         const snapshot = await get(notificationsRef);
         if (snapshot.exists()) {
-            alert(`Notification "${notificationName}" already exists!`);
+            alert(`Certification "${notificationName}" already exists!`);
         } else {
-            // Create a new notification entry in the database
-            await set(notificationsRef, 0); // Assign 0 questions to the new notification
-            alert(`Notification "${notificationName}" created with 0 questions.`);
-            document.getElementById("notificationName").value = ""; // Clear the input field
+            await set(notificationsRef, 0);
+            alert(`Certification "${notificationName}" created with 0 questions.`);
+            fetchExamData();
         }
     } catch (error) {
-        alert("Error checking/creating notification: " + error);
+        console.error("Error creating certification:", error);
+        alert("Failed to create certification.");
+    }
+}
+
+// Function to delete a certification
+async function deleteCertification(notificationName) {
+    const notificationsRef = ref(db, `examNumQ/${notificationName}`);
+    try {
+        const snapshot = await get(notificationsRef);
+        if (snapshot.exists()) {
+            const confirmDelete = confirm(`Are you sure you want to delete the certification "${notificationName}"?`);
+            if (confirmDelete) {
+                await set(notificationsRef, null);
+                alert(`Certification "${notificationName}" has been deleted.`);
+                fetchExamData();
+            }
+        } else {
+            alert(`Certification "${notificationName}" does not exist.`);
+        }
+    } catch (error) {
+        console.error("Error deleting certification:", error);
+        alert("Failed to delete certification.");
+    }
+}
+
+// Handle dropdown selection and populate input field
+const notificationDropdown = document.getElementById('notificationDropdown');
+const notificationNameInput = document.getElementById('notificationName');
+
+notificationDropdown.addEventListener('change', () => {
+    notificationNameInput.value = notificationDropdown.value; // Set the selected dropdown value to the input field
+});
+
+// Event listeners for the buttons
+document.getElementById('createCertification').addEventListener('click', () => {
+    const notificationName = notificationNameInput.value.trim().toUpperCase();
+    if (notificationName) {
+        createCertification(notificationName);
+        notificationNameInput.value = ''; // Clear the input
+    } else {
+        alert("Certification name cannot be empty!");
     }
 });
 
+document.getElementById('deleteCertification').addEventListener('click', () => {
+    const notificationName = notificationNameInput.value.trim().toUpperCase();
+    if (notificationName) {
+        deleteCertification(notificationName);
+        notificationNameInput.value = ''; // Clear the input
+    } else {
+        alert("Certification name cannot be empty!");
+    }
+});
 
-
-
-
-
-
-// Call the function to fetch and display exam data when the page loads
+// Fetch data when the page loads
 window.onload = fetchExamData;
-
-
-
