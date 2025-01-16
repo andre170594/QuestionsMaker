@@ -65,23 +65,29 @@ section {
     margin-top: 20px;
     display: flex;
     padding: 20px;
+
 }
 
 .users-pane {
     margin-top: 40px;
     width: 20%;
     padding: 20px;
-    background: rgba(129, 129, 129, 0.3);
     border-radius: 8px;
     margin-right: 20px;
+    background-color: rgba(0, 150, 136, 0.1); /* Subtle background to match the theme */
+    max-width: 800px; /* Match the max-width of the table */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    border: 1px solid #ccc;
 }
 
 .feeds-pane {
     margin-top: 40px;
     width: 75%;
     padding: 20px;
-    background: rgba(129, 129, 129, 0.3);
     border-radius: 10px;
+    background-color: rgba(0, 150, 136, 0.1); /* Subtle background to match the theme */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    border: 1px solid #ccc;
 }
 
 #userList {
