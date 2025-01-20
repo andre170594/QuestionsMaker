@@ -88,7 +88,10 @@ section {
     background-color: rgba(0, 150, 136, 0.1); /* Subtle background to match the theme */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
     border: 1px solid #ccc;
+    height: 400px; /* Fixed height for the feeds pane */
+    overflow-y: auto; /* Enable vertical scrolling */
 }
+
 
 #userList {
     list-style-type: none;
