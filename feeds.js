@@ -24,18 +24,29 @@ const db = getDatabase();
 
 
 // Function to fetch and display users
+// Function to fetch and display users
 async function fetchUsers() {
-    const usersRef = ref(db, 'users');  // Assuming 'users' node holds user data
+    const usersRef = ref(db, 'users'); // Assuming 'users' node holds user data
     const userListElement = document.getElementById('userList'); // Left pane element for users
 
     try {
         const snapshot = await get(usersRef);
         if (snapshot.exists()) {
             userListElement.innerHTML = ''; // Clear the previous list
+            const usersArray = [];
+
             snapshot.forEach(childSnapshot => {
                 const user = childSnapshot.val();
+                usersArray.push(user); // Collect users in an array
+            });
+
+            // Sort the users array alphabetically by username
+            usersArray.sort((a, b) => a.username.localeCompare(b.username));
+
+            // Append sorted users to the list
+            usersArray.forEach(user => {
                 const listItem = document.createElement('li');
-                listItem.textContent = user.username;  // Assuming 'username' is a field in your user data
+                listItem.textContent = user.username; // Assuming 'username' is a field in your user data
                 listItem.addEventListener('click', function () {
                     // Remove 'selected-user' class from all list items
                     const allListItems = userListElement.querySelectorAll('li');
@@ -58,6 +69,7 @@ async function fetchUsers() {
         alert("Failed to fetch users.");
     }
 }
+
 
 // Function to display user feeds
 async function displayUserFeeds(userName) {
